@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -39,16 +38,9 @@ export default function Navbar() {
         <div className="flex justify-between items-center">
           <Link 
             href="/" 
-            className="flex items-center space-x-2 text-xl font-bold text-gray-800 hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
+            className="text-xl font-bold text-gray-800 hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
           >
-            <Image
-              src="/favicon.ico"
-              alt="Joglo Breeze Icon"
-              width={24}
-              height={24}
-              className="w-6 h-6 object-contain"
-            />
-            <span>Joglo Breeze</span>
+            Joglo Breeze
           </Link>
           
           {/* Desktop Navigation */}

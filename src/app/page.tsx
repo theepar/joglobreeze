@@ -9,9 +9,6 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [visibleSections, setVisibleSections] = useState<string[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalImageIndex, setModalImageIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
 
   const galleryImages = [
     { id: 1, src: "/image/home-2.jpg", alt: "Interior kamar" },
@@ -22,8 +19,6 @@ export default function Home() {
   ];
 
   useEffect(() => {
-    setIsMounted(true);
-    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -62,126 +57,69 @@ export default function Home() {
     setTimeout(() => setIsTransitioning(false), 500);
   };
 
-  const openModal = (index: number) => {
-    setModalImageIndex(index);
-    setIsModalOpen(true);
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    document.body.style.overflow = 'unset'; // Restore scrolling
-  };
-
-  const nextModalImage = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setModalImageIndex((prev) => (prev + 1) % galleryImages.length);
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
-
-  const prevModalImage = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setModalImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
-
-  const scrollToGallery = () => {
-    const gallerySection = document.getElementById('gallery');
-    if (gallerySection) {
-      gallerySection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  // Handle modal close on escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isModalOpen) {
-        closeModal();
-      }
-    };
-
-    if (isModalOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [isModalOpen]);
-
   return (
     <div className="min-h-screen bg-stone-50">
       <ClientScripts />
       <Navbar />
 
-      {/* Hero Section - Full Screen but scrollable */}
-      <section id="home" className="relative w-full h-screen overflow-hidden" data-animate="true">
-        <div className={`relative w-full h-full transition-all duration-1000 ease-out ${
-          isMounted && visibleSections.includes('home') ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'
-        }`}>
-          <div className="relative w-full h-full group">
-            <Image
-              src="/image/header.jpg"
-              alt="Pemandangan utama Joglo Breeze"
-              width={1920}
-              height={1080}
-              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-              priority
-            />
-            
-            {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/40" />
-            
-            {/* Center text content */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
-              <div className={`max-w-4xl mx-auto transition-all duration-1500 ${
-                isMounted && visibleSections.includes('home') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-              }`}>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 tracking-wide">
-                  <span className={`block transition-all duration-1200 ${isMounted ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '0.2s' }}>Ketenangan Tropis</span>
-                  <span className={`block text-amber-300 transition-all duration-1200 ${isMounted ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '0.4s' }}>di Jantung Bali</span>
-                </h1>
-                <p className={`text-lg sm:text-xl md:text-2xl mb-8 sm:mb-12 font-light leading-relaxed opacity-90 transition-all duration-1200 ${isMounted ? 'animate-fade-in-up' : ''}`} style={{ animationDelay: '0.6s' }}>
-                  Temukan pengalaman otentik dalam balutan kemewahan alami di Joglo Breeze
-                </p>
-                <button 
-                  onClick={scrollToGallery}
-                  className={`bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover:shadow-2xl hover:scale-105 transform ${isMounted ? 'animate-fade-in-up' : ''}`}
-                  style={{ animationDelay: '0.8s' }}
-                >
-                  Lihat Pilihan Kamar
-                </button>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-8">
+        {/* Hero Image */}
+        <section id="home" className="mb-12 sm:mb-16" data-animate="true">
+          <div className={`w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] rounded-xl overflow-hidden transition-all duration-1000 ease-out ${
+            visibleSections.includes('home') ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-95'
+          }`}>
+            <div className="relative w-full h-full group">
+              <Image
+                src="/image/header.jpg"
+                alt="Pemandangan utama Joglo Breeze"
+                width={1200}
+                height={800}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+              />
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Center Welcome Icon and Text */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-90 group-hover:scale-100">
+                <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/20">
+                  {/* Joglo Icon */}
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-600 rounded-full flex items-center justify-center shadow-lg">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7v10c0 5.55 3.84 10 9 11 1.09-.87 2-2.02 2.71-3.33.4-.8.64-1.67.81-2.58.14-.82.23-1.65.23-2.52V7l-10-5z"/>
+                      <path d="M12 2v20c5.16-1 9-5.45 9-11V7l-10-5z" opacity="0.7"/>
+                    </svg>
+                  </div>
+                  
+                  {/* Welcome Text */}
+                  <div className="text-white">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-1">Welcome</h2>
+                    <p className="text-sm sm:text-base opacity-90">to Joglo Breeze</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Bottom text overlay */}
+              <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg px-4 py-3">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-1">Experience Authentic Balinese Hospitality</h3>
+                  <p className="text-sm sm:text-base opacity-90">Traditional Joglo architecture meets modern comfort</p>
+                </div>
               </div>
             </div>
-            
-            {/* Animated Arrow Down */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-              <button 
-                onClick={scrollToGallery}
-                className="animate-arrow-down cursor-pointer hover:scale-110 transition-transform duration-300"
-                aria-label="Scroll to gallery"
-              >
-                <svg className="w-8 h-8 text-white opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-              </button>
-            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 bg-stone-50">
+        </section>
 
         {/* Gallery Section */}
         <section id="gallery" className="mb-16 sm:mb-20" data-animate="true">
           <div className={`transition-all duration-700 ${
-            isMounted && visibleSections.includes('gallery') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            visibleSections.includes('gallery') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8">Gallery</h2>
-            <div className="relative max-w-6xl mx-auto">
-              {/* Main Image - Made larger */}
-              <div className="relative h-80 sm:h-96 md:h-[500px] lg:h-[600px] rounded-xl overflow-hidden bg-gray-100 cursor-pointer group">
-                <div className="relative w-full h-full" onClick={() => openModal(currentSlide)}>
+            <div className="relative max-w-4xl mx-auto">
+              {/* Main Image */}
+              <div className="relative h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden bg-gray-100">
+                <div className="relative w-full h-full">
                   {galleryImages.map((image, index) => {
                     let slideClass = 'opacity-0 translate-x-full';
                     if (index === currentSlide) {
@@ -198,30 +136,22 @@ export default function Home() {
                         <Image
                           src={image.src}
                           alt={image.alt}
-                          width={1200}
-                          height={800}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          width={800}
+                          height={600}
+                          className="w-full h-full object-cover"
                         />
                       </div>
                     );
                   })}
-                  
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg">
-                      <p className="text-gray-800 font-medium">Klik untuk memperbesar</p>
-                    </div>
-                  </div>
                 </div>
                 
                 {/* Navigation Arrows */}
                 <button
                   onClick={prevSlide}
                   disabled={isTransitioning}
-                  className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 md:p-3 rounded-full shadow-lg transition-all duration-200 disabled:opacity-50 z-10"
-                  aria-label="Previous image"
+                  className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 disabled:opacity-50"
                 >
-                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
@@ -229,24 +159,23 @@ export default function Home() {
                 <button
                   onClick={nextSlide}
                   disabled={isTransitioning}
-                  className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 md:p-3 rounded-full shadow-lg transition-all duration-200 disabled:opacity-50 z-10"
-                  aria-label="Next image"
+                  className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 disabled:opacity-50"
                 >
-                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
               </div>
 
               {/* Thumbnail Navigation */}
-              <div className="flex justify-center mt-4 space-x-2 md:space-x-3 px-4">
-                {galleryImages.map((image, index) => (
+              <div className="flex justify-center mt-4 space-x-1 md:space-x-2 px-4">
+                {galleryImages.map((image) => (
                   <button
                     key={image.id}
-                    onClick={() => goToSlide(index)}
+                    onClick={() => goToSlide(galleryImages.indexOf(image))}
                     disabled={isTransitioning}
-                    className={`w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                      index === currentSlide 
+                    className={`w-12 h-12 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                      galleryImages.indexOf(image) === currentSlide 
                         ? 'border-amber-500 opacity-100' 
                         : 'border-gray-300 opacity-60 hover:opacity-80'
                     } disabled:opacity-50`}
@@ -254,8 +183,8 @@ export default function Home() {
                     <Image
                       src={image.src}
                       alt={image.alt}
-                      width={96}
-                      height={96}
+                      width={64}
+                      height={64}
                       className="w-full h-full object-cover"
                     />
                   </button>
@@ -264,13 +193,13 @@ export default function Home() {
 
               {/* Slide Indicator */}
               <div className="flex justify-center mt-4 space-x-2">
-                {galleryImages.map((_, index) => (
+                {galleryImages.map((image) => (
                   <button
-                    key={`dot-${index}`}
-                    onClick={() => goToSlide(index)}
+                    key={`dot-${image.id}`}
+                    onClick={() => goToSlide(galleryImages.indexOf(image))}
                     disabled={isTransitioning}
-                    className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-200 ${
-                      index === currentSlide ? 'bg-amber-500' : 'bg-gray-300 hover:bg-gray-400'
+                    className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-200 ${
+                      galleryImages.indexOf(image) === currentSlide ? 'bg-amber-500' : 'bg-gray-300 hover:bg-gray-400'
                     } disabled:opacity-50`}
                   />
                 ))}
@@ -282,13 +211,13 @@ export default function Home() {
         {/* About Section */}
         <section id="about" className="mb-16 sm:mb-20 text-center max-w-4xl mx-auto px-4" data-animate="true">
           <div className={`transition-all duration-1000 ease-out ${
-            isMounted && visibleSections.includes('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            visibleSections.includes('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}>
             <h2 className={`text-3xl sm:text-4xl font-bold text-gray-800 mb-6 sm:mb-8 transition-all duration-1200 ${
-              isMounted && visibleSections.includes('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              visibleSections.includes('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '200ms' }}>About</h2>
             <p className={`text-base sm:text-lg text-gray-600 leading-relaxed transition-all duration-1200 ${
-              isMounted && visibleSections.includes('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              visibleSections.includes('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '400ms' }}>
               Nestled in the heart of Bali, our guesthouse offers an authentic experience in a traditional joglo. 
               Each joglo is meticulously crafted with intricate carvings and natural materials, providing a serene 
@@ -301,14 +230,14 @@ export default function Home() {
         {/* Rooms Section */}
         <section id="rooms" className="mb-16 sm:mb-20" data-animate="true">
           <div className={`transition-all duration-1000 ease-out ${
-            isMounted && visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}>
             <h2 className={`text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-8 sm:mb-12 transition-all duration-1200 ${
-              isMounted && visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '200ms' }}>Our Rooms</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <div className={`text-center bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-500 group ${
-                isMounted && visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`} style={{ transitionDelay: '400ms' }}>
                 <div className="h-64 sm:h-72 rounded-xl overflow-hidden mb-4">
                   <Image
@@ -323,7 +252,7 @@ export default function Home() {
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">Experience luxury in our premier suite featuring a private terrace with stunning sunrise views, elegant traditional décor, and modern amenities for the ultimate romantic getaway.</p>
               </div>
               <div className={`text-center bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-500 group ${
-                isMounted && visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`} style={{ transitionDelay: '600ms' }}>
                 <div className="h-64 sm:h-72 rounded-xl overflow-hidden mb-4">
                   <Image
@@ -338,7 +267,7 @@ export default function Home() {
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">Immerse yourself in nature with our garden-facing room surrounded by lush tropical plants, featuring a private outdoor shower and peaceful ambiance perfect for relaxation and meditation.</p>
               </div>
               <div className={`text-center bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:scale-105 transition-all duration-500 group ${
-                isMounted && visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                visibleSections.includes('rooms') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`} style={{ transitionDelay: '800ms' }}>
                 <div className="h-64 sm:h-72 rounded-xl overflow-hidden mb-4">
                   <Image
@@ -359,14 +288,14 @@ export default function Home() {
         {/* Amenities Section */}
         <section id="amenities" className="mb-16 sm:mb-20" data-animate="true">
           <div className={`transition-all duration-1000 ease-out ${
-            isMounted && visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}>
             <h2 className={`text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-8 sm:mb-12 transition-all duration-1200 ${
-              isMounted && visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '200ms' }}>Amenities</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
               <div className={`border border-gray-200 bg-white hover:bg-amber-50 hover:border-amber-200 hover:shadow-lg hover:scale-110 flex flex-col items-center justify-center space-y-2 py-4 sm:py-6 px-2 sm:px-4 rounded-lg transition-all duration-500 group ${
-                isMounted && visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '400ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a7.5 7.5 0 0110.606 0M1.465 8.465a9.5 9.5 0 0113.434 0"></path>
@@ -374,15 +303,15 @@ export default function Home() {
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Free Wi-Fi</span>
               </div>
               <div className={`border border-gray-200 bg-white hover:bg-amber-50 hover:border-amber-200 hover:shadow-lg hover:scale-110 flex flex-col items-center justify-center space-y-2 py-4 sm:py-6 px-2 sm:px-4 rounded-lg transition-all duration-500 group ${
-                isMounted && visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '500ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                 </svg>
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Free Parking</span>
               </div>
               <div className={`border border-gray-200 bg-white hover:bg-amber-50 hover:border-amber-200 hover:shadow-lg hover:scale-110 flex flex-col items-center justify-center space-y-2 py-4 sm:py-6 px-2 sm:px-4 rounded-lg transition-all duration-500 group ${
-                isMounted && visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '600ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2v0a2 2 0 002-2h6l2 2h6a2 2 0 012 2v1M3 7l18 0"></path>
@@ -390,7 +319,7 @@ export default function Home() {
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Kitchenette</span>
               </div>
               <div className={`border border-gray-200 bg-white hover:bg-amber-50 hover:border-amber-200 hover:shadow-lg hover:scale-110 flex flex-col items-center justify-center space-y-2 py-4 sm:py-6 px-2 sm:px-4 rounded-lg transition-all duration-500 group ${
-                isMounted && visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '700ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
@@ -409,8 +338,7 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '900ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 21l4-4h8l-4 4H8zM8 17l4-4V9a4 4 0 118 0v4l4 4H8z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v6m0 0a4 4 0 014 4v4m-4-8a4 4 0 00-4 4v4"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path>
                 </svg>
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Traditional Gazebo</span>
               </div>
@@ -418,8 +346,7 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '1000ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01M12 4a1 1 0 00-1 1v2a1 1 0 102 0V5a1 1 0 00-1-1z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h8a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6a2 2 0 012-2z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                 </svg>
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Outdoor Shower</span>
               </div>
@@ -427,10 +354,9 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '1100ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 2a1 1 0 000 2h6a1 1 0 100-2H9zM9 5a2 2 0 00-2 2v6.5a.5.5 0 01-.5.5h-1a.5.5 0 00-.5.5v.5a2.5 2.5 0 005 0v-.5a.5.5 0 00-.5-.5h-1a.5.5 0 01-.5-.5V7a2 2 0 00-2-2zm6 0a2 2 0 012 2v6.5a.5.5 0 00.5.5h1a.5.5 0 01.5.5v.5a2.5 2.5 0 01-5 0v-.5a.5.5 0 01.5-.5h1a.5.5 0 00.5-.5V7a2 2 0 012-2z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2v20M4 12h16"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Water Heater</span>
+                <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">24/7 Support</span>
               </div>
             </div>
           </div>
@@ -439,7 +365,7 @@ export default function Home() {
         {/* Location Section */}
         <section id="location" className="mb-16 sm:mb-20" data-animate="true">
           <div className={`transition-all duration-700 ${
-            isMounted && visibleSections.includes('location') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            visibleSections.includes('location') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-8 sm:mb-12">Location</h2>
             <div className="w-full h-[40vh] sm:h-[50vh] rounded-xl overflow-hidden border border-gray-200">
@@ -459,98 +385,6 @@ export default function Home() {
       </main>
 
       <Footer />
-
-      {/* Image Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-          <div className="relative w-full h-full max-w-7xl max-h-[90vh] mx-4">
-            {/* Close Button */}
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 text-white p-2 rounded-full transition-all duration-200 backdrop-blur-sm"
-              aria-label="Close modal"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {/* Modal Image */}
-            <div className="relative w-full h-full flex items-center justify-center">
-              <div className="relative w-full h-full max-w-5xl max-h-[80vh]">
-                <Image
-                  src={galleryImages[modalImageIndex].src}
-                  alt={galleryImages[modalImageIndex].alt}
-                  width={1200}
-                  height={800}
-                  className="w-full h-full object-contain"
-                  priority
-                />
-              </div>
-
-              {/* Modal Navigation Arrows */}
-              <button
-                onClick={prevModalImage}
-                disabled={isTransitioning}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all duration-200 disabled:opacity-50 backdrop-blur-sm"
-                aria-label="Previous image"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              
-              <button
-                onClick={nextModalImage}
-                disabled={isTransitioning}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all duration-200 disabled:opacity-50 backdrop-blur-sm"
-                aria-label="Next image"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Modal Image Info */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-lg backdrop-blur-sm">
-              <p className="text-sm">
-                {galleryImages[modalImageIndex].alt} ({modalImageIndex + 1} / {galleryImages.length})
-              </p>
-            </div>
-
-            {/* Modal Thumbnail Navigation */}
-            <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2">
-              {galleryImages.map((image, index) => (
-                <button
-                  key={`modal-thumb-${image.id}`}
-                  onClick={() => setModalImageIndex(index)}
-                  className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
-                    index === modalImageIndex 
-                      ? 'border-amber-400 opacity-100' 
-                      : 'border-white/30 opacity-60 hover:opacity-80'
-                  }`}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Click outside to close */}
-          <div 
-            className="absolute inset-0 -z-10" 
-            onClick={closeModal}
-            aria-label="Close modal"
-          />
-        </div>
-      )}
     </div>
   );
 }
