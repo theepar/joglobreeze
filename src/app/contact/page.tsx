@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import Navbar from "../components/Navbar";
 
 export default function Contact() {
@@ -55,27 +56,6 @@ export default function Contact() {
            parseInt(formData.guests) > 0;
   };
 
-  const validateField = (name: string, value: string) => {
-    const today = new Date().toISOString().split('T')[0];
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9+\-\s()]+$/;
-    
-    switch (name) {
-      case 'email':
-        return value === '' || emailRegex.test(value);
-      case 'phone':
-        return value === '' || phoneRegex.test(value);
-      case 'checkIn':
-        return value === '' || value >= today;
-      case 'checkOut':
-        return value === '' || (formData.checkIn === '' || value > formData.checkIn);
-      case 'guests':
-        return value === '' || (parseInt(value) > 0 && !isNaN(parseInt(value)));
-      default:
-        return true;
-    }
-  };
-
   const getFieldError = (name: string, value: string) => {
     const today = new Date().toISOString().split('T')[0];
     
@@ -97,25 +77,29 @@ export default function Contact() {
     return '';
   };
 
+  const getValidationErrors = () => {
+    const today = new Date().toISOString().split('T')[0];
+    const errors = [];
+    
+    if (formData.name.trim() === '') errors.push('• Name is required');
+    if (formData.email.trim() === '') errors.push('• Email is required');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errors.push('• Email must be valid');
+    if (formData.phone.trim() === '') errors.push('• Phone is required');
+    else if (!/^[0-9+\-\s()]+$/.test(formData.phone)) errors.push('• Phone number can only contain numbers');
+    if (formData.checkIn === '') errors.push('• Check-in date is required');
+    else if (formData.checkIn < today) errors.push('• Check-in date cannot be in the past');
+    if (formData.checkOut === '') errors.push('• Check-out date is required');
+    else if (formData.checkOut <= formData.checkIn) errors.push('• Check-out date must be after check-in date');
+    if (formData.guests.trim() === '') errors.push('• Number of guests is required');
+    else if (parseInt(formData.guests) <= 0) errors.push('• Number of guests must be positive');
+    
+    return errors;
+  };
+
   const handleSendClick = (type: 'whatsapp' | 'email') => {
     if (!isFormValid()) {
-      // Check for specific validation errors
-      const today = new Date().toISOString().split('T')[0];
-      let errorMessage = 'Please fix the following issues:\n\n';
-      
-      if (formData.name.trim() === '') errorMessage += '• Name is required\n';
-      if (formData.email.trim() === '') errorMessage += '• Email is required\n';
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errorMessage += '• Email must be valid\n';
-      if (formData.phone.trim() === '') errorMessage += '• Phone is required\n';
-      else if (!/^[0-9+\-\s()]+$/.test(formData.phone)) errorMessage += '• Phone number can only contain numbers\n';
-      if (formData.checkIn === '') errorMessage += '• Check-in date is required\n';
-      else if (formData.checkIn < today) errorMessage += '• Check-in date cannot be in the past\n';
-      if (formData.checkOut === '') errorMessage += '• Check-out date is required\n';
-      else if (formData.checkOut <= formData.checkIn) errorMessage += '• Check-out date must be after check-in date\n';
-      if (formData.guests.trim() === '') errorMessage += '• Number of guests is required\n';
-      else if (parseInt(formData.guests) <= 0) errorMessage += '• Number of guests must be positive\n';
-      
-      alert(errorMessage);
+      const errors = getValidationErrors();
+      alert('Please fix the following issues:\n\n' + errors.join('\n'));
       return;
     }
     
@@ -375,8 +359,8 @@ Thank you for your time and I look forward to hearing from you! 🙏`);
           <div className="text-center text-gray-500 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-sm order-first sm:order-none">&copy; 2024 Joglo Breeze. All rights reserved.</p>
             <div className="space-x-6 text-sm">
-              <a href="/#" className="hover:text-gray-800">Terms of Service</a>
-              <a href="/#" className="hover:text-gray-800">Contact Us</a>
+              <Link href="/" className="hover:text-gray-800">Terms of Service</Link>
+              <Link href="/" className="hover:text-gray-800">Contact Us</Link>
             </div>
           </div>
         </div>
