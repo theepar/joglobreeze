@@ -1,22 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const isActive = (path: string) => {
     return pathname === path;
@@ -26,62 +17,57 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
-  const closeMenu = () => {
-    setIsOpen(false);
+  const getNavLinkClass = (path: string) => {
+    const baseClass = "transition-all duration-300 font-medium relative px-3 py-2 rounded-lg transform hover:scale-105 hover:-translate-y-1";
+    
+    if (isActive(path)) {
+      return `${baseClass} text-white hover:text-white font-semibold bg-amber-500`;
+    } else {
+      return `${baseClass} text-dark hover:text-amber-400 hover:bg-white/10 hover:shadow-lg`;
+    }
   };
 
   return (
-    <nav className={`bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 transition-all duration-300 ${
-      isScrolled ? 'shadow-lg py-2' : 'py-4'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <nav className="sticky top-0 z-50 bg-white backdrop-blur-sm border-b border-white/20 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 ">
         <div className="flex justify-between items-center">
           <Link 
             href="/" 
-            className="text-xl font-bold text-gray-800 hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
+            className="flex items-center space-x-2 text-xl font-bold text-dark hover:text-amber-400 transition-colors duration-300"
           >
-            Joglo Breeze
+            <Image
+              src="/favicon.ico"
+              alt="Joglo Breeze Icon"
+              width={24}
+              height={24}
+              className="w-6 h-6 object-contain"
+            />
+            <span>Joglo Breeze</span>
           </Link>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8 text-gray-600">
+          <div className="hidden md:flex space-x-8">
             <Link
               href="/"
-              className={`transition-all duration-300 font-medium hover:scale-105 transform ${
-                isActive("/")
-                  ? "text-amber-600 hover:text-amber-700 font-semibold"
-                  : "text-gray-700 hover:text-amber-700"
-              }`}
+              className={getNavLinkClass("/")}
             >
               Home
             </Link>
             <Link
               href="/rooms"
-              className={`transition-all duration-300 font-medium hover:scale-105 transform ${
-                isActive("/rooms")
-                  ? "text-amber-600 hover:text-amber-700 font-semibold"
-                  : "text-gray-700 hover:text-amber-700"
-              }`}
+              className={getNavLinkClass("/rooms")}
             >
               Rooms
             </Link>
             <Link
               href="/about"
-              className={`transition-all duration-300 font-medium hover:scale-105 transform ${
-                isActive("/about")
-                  ? "text-amber-600 hover:text-amber-700 font-semibold"
-                  : "text-gray-700 hover:text-amber-700"
-              }`}
+              className={getNavLinkClass("/about")}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className={`transition-all duration-300 font-medium hover:scale-105 transform ${
-                isActive("/contact")
-                  ? "text-amber-600 hover:text-amber-700 font-semibold"
-                  : "text-gray-700 hover:text-amber-700"
-              }`}
+              className={getNavLinkClass("/contact")}
             >
               Contact
             </Link>
@@ -90,7 +76,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link
               href="/contact"
-              className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 sm:px-5 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base"
+              className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-lg"
             >
               Book Now
             </Link>
@@ -98,19 +84,29 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <button
               onClick={toggleMenu}
-              className="md:hidden ml-2 p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all duration-200 transform hover:scale-105"
+              className="md:hidden ml-3 p-2 rounded-lg text-dark hover:bg-white/10 transition-all duration-300 transform hover:scale-110"
               aria-label="Toggle menu"
             >
               <svg
-                className={`w-6 h-6 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                className={`w-6 h-6 transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 )}
               </svg>
             </button>
@@ -118,53 +114,41 @@ export default function Navbar() {
         </div>
         
         {/* Mobile Navigation */}
-        <div className={`md:hidden transition-all duration-300 overflow-hidden ${
+        <div className={`md:hidden transition-all duration-300 ${
           isOpen 
-            ? 'max-h-64 opacity-100 transform translate-y-0' 
-            : 'max-h-0 opacity-0 transform -translate-y-2'
+            ? 'max-h-64 opacity-100 mt-4' 
+            : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
-          <div className="border-t border-gray-200">
-            <div className="flex flex-col space-y-1 pt-4 pb-2">
+          <div className="backdrop-blur-md rounded-lg p-4 border border-white/20">
+            <div className="flex flex-col space-y-2">
               <Link
                 href="/"
-                onClick={closeMenu}
-                className={`px-3 py-2 rounded-lg transition-all duration-200 font-medium transform hover:scale-105 ${
-                  isActive("/")
-                    ? "bg-amber-100 text-amber-600 font-semibold"
-                    : "text-gray-700 hover:bg-gray-100"
+                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                  isActive("/") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
                 Home
               </Link>
               <Link
                 href="/rooms"
-                onClick={closeMenu}
-                className={`px-3 py-2 rounded-lg transition-all duration-200 font-medium transform hover:scale-105 ${
-                  isActive("/rooms")
-                    ? "bg-amber-100 text-amber-600 font-semibold"
-                    : "text-gray-700 hover:bg-gray-100"
+                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                  isActive("/rooms") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
                 Rooms
               </Link>
               <Link
                 href="/about"
-                onClick={closeMenu}
-                className={`px-3 py-2 rounded-lg transition-all duration-200 font-medium transform hover:scale-105 ${
-                  isActive("/about")
-                    ? "bg-amber-100 text-amber-600 font-semibold"
-                    : "text-gray-700 hover:bg-gray-100"
+                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                  isActive("/about") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
                 About
               </Link>
               <Link
                 href="/contact"
-                onClick={closeMenu}
-                className={`px-3 py-2 rounded-lg transition-all duration-200 font-medium transform hover:scale-105 ${
-                  isActive("/contact")
-                    ? "bg-amber-100 text-amber-600 font-semibold"
-                    : "text-gray-700 hover:bg-gray-100"
+                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                  isActive("/contact") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
                 Contact
