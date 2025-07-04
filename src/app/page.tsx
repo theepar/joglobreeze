@@ -80,25 +80,6 @@ export default function Home() {
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
-              {/* Center Welcome Icon and Text */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-90 group-hover:scale-100">
-                <div className="flex items-center space-x-4 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/20">
-                  {/* Joglo Icon */}
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-600 rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2L2 7v10c0 5.55 3.84 10 9 11 1.09-.87 2-2.02 2.71-3.33.4-.8.64-1.67.81-2.58.14-.82.23-1.65.23-2.52V7l-10-5z"/>
-                      <path d="M12 2v20c5.16-1 9-5.45 9-11V7l-10-5z" opacity="0.7"/>
-                    </svg>
-                  </div>
-                  
-                  {/* Welcome Text */}
-                  <div className="text-white">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-1">Welcome</h2>
-                    <p className="text-sm sm:text-base opacity-90">to Joglo Breeze</p>
-                  </div>
-                </div>
-              </div>
-              
               {/* Bottom text overlay */}
               <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                 <div className="bg-black/30 backdrop-blur-sm rounded-lg px-4 py-3">
@@ -306,7 +287,7 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '500ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Free Parking</span>
               </div>
@@ -338,7 +319,8 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '900ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 21l4-4h8l-4 4H8zM8 17l4-4V9a4 4 0 118 0v4l4 4H8z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v6m0 0a4 4 0 014 4v4m-4-8a4 4 0 00-4 4v4"/>
                 </svg>
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Traditional Gazebo</span>
               </div>
@@ -346,7 +328,8 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '1000ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01M12 4a1 1 0 00-1 1v2a1 1 0 102 0V5a1 1 0 00-1-1z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h8a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6a2 2 0 012-2z"/>
                 </svg>
                 <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Outdoor Shower</span>
               </div>
@@ -354,9 +337,10 @@ export default function Home() {
                 visibleSections.includes('amenities') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`} style={{ transitionDelay: '1100ms' }}>
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 2a1 1 0 000 2h6a1 1 0 100-2H9zM9 5a2 2 0 00-2 2v6.5a.5.5 0 01-.5.5h-1a.5.5 0 00-.5.5v.5a2.5 2.5 0 005 0v-.5a.5.5 0 00-.5-.5h-1a.5.5 0 01-.5-.5V7a2 2 0 00-2-2zm6 0a2 2 0 012 2v6.5a.5.5 0 00.5.5h1a.5.5 0 01.5.5v.5a2.5 2.5 0 01-5 0v-.5a.5.5 0 01.5-.5h1a.5.5 0 00.5-.5V7a2 2 0 012-2z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2v20M4 12h16"/>
                 </svg>
-                <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">24/7 Support</span>
+                <span className="text-xs sm:text-sm font-medium text-center group-hover:text-amber-800 transition-colors duration-300">Water Heater</span>
               </div>
             </div>
           </div>
