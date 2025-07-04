@@ -18,7 +18,7 @@ export default function Home() {
     { id: 2, src: "/image/home-3.jpg", alt: "Tempat tidur nyaman" },
     { id: 3, src: "/image/bath-1.jpg", alt: "Kamar mandi outdoor" },
     { id: 4, src: "/image/garden.jpg", alt: "Ruang tamu tradisional" },
-    { id: 5, src: "/image/front-house.jpg", alt: "Pemandangan taman" }
+    { id: 5, src: "/image/outdoor-1.jpg", alt: "Pemandangan taman" }
   ], []);
 
   useEffect(() => {

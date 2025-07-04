@@ -18,12 +18,12 @@ export default function Navbar() {
   };
 
   const getNavLinkClass = (path: string) => {
-    const baseClass = "transition-all duration-300 font-medium relative px-3 py-2 rounded-lg transform hover:scale-105 hover:-translate-y-1";
+    const baseClass = "transition-all duration-300 font-medium relative px-3 py-2 rounded-lg";
     
     if (isActive(path)) {
       return `${baseClass} text-white hover:text-white font-semibold bg-amber-500`;
     } else {
-      return `${baseClass} text-dark hover:text-amber-400 hover:bg-white/10 hover:shadow-lg`;
+      return `${baseClass} text-dark hover:text-amber-400`;
     }
   };
 
@@ -84,7 +84,7 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <button
               onClick={toggleMenu}
-              className="md:hidden ml-3 p-2 rounded-lg text-dark hover:bg-white/10 transition-all duration-300 transform hover:scale-110"
+              className="md:hidden ml-3 p-2 rounded-lg text-dark hover:text-amber-400 transition-all duration-300"
               aria-label="Toggle menu"
             >
               <svg
@@ -123,7 +123,7 @@ export default function Navbar() {
             <div className="flex flex-col space-y-2">
               <Link
                 href="/"
-                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                className={`px-3 py-2 rounded-lg text-dark hover:text-amber-400 transition-colors duration-200 ${
                   isActive("/") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
@@ -131,7 +131,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/rooms"
-                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                className={`px-3 py-2 rounded-lg text-dark hover:text-amber-400 transition-colors duration-200 ${
                   isActive("/rooms") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
@@ -139,7 +139,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/about"
-                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                className={`px-3 py-2 rounded-lg text-dark hover:text-amber-400 transition-colors duration-200 ${
                   isActive("/about") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
@@ -147,7 +147,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/contact"
-                className={`px-3 py-2 rounded-lg text-dark hover:bg-white/20 transition-colors duration-200 ${
+                className={`px-3 py-2 rounded-lg text-dark hover:text-amber-400 transition-colors duration-200 ${
                   isActive("/contact") ? "bg-amber-500 text-white font-semibold" : ""
                 }`}
               >
