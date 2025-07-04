@@ -33,3 +33,43 @@ html {
 .btn-primary:hover {
   background-color: #b45309;
 }
+
+/* Custom arrow down animation */
+@keyframes arrowDown {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(10px);
+    opacity: 0.4;
+  }
+}
+
+.animate-arrow-down {
+  animation: arrowDown 2s ease-in-out infinite;
+}
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s ease-out forwards;
+  opacity: 0;
+}
